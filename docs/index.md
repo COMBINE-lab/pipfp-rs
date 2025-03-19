@@ -5,6 +5,9 @@ sequence collection. By looking at how \(\pi_{w,p}\) changes as new sequences ar
 the newly added sequences are compared to what is already present in the collection.  The parameters \(w\) (the window size) and \(p\) (the sampling factor) affect how  the 
 value is computed, but \(\pi\) is fairly robust to these values as described in the preprint of Lipták et al.[^preprint].
 
+This program itself is built around the core high-performance PFP implementation of Igor Martayan[^pfprs]. That implementation is a work in progress, but it has several performance 
+advantages over existing PFP implementations, which should be explained in an upcoming preprint.
+
 ## How `pipfp-rs` works
 
 The usage for `pipfp-rs` is shown below.  It has one required parameter (`-i`/`--input`) which takes either the path to a directory, or a file that lists a collection of input files (1 file per line).
@@ -43,3 +46,5 @@ a key `norm` whose value is `true` if the `-n` flag was used and `false` otherwi
 [^preprint]: Zsuzsanna Lipták, Simone Lucà, Francesco Masillo bioRxiv 2025.02.21.639270; doi: [https://doi.org/10.1101/2025.02.21.639270](https://doi.org/10.1101/2025.02.21.639270)
 
 [^pipfp]: [pipfp](https://github.com/simolucaa/piPFP)
+
+[^pfprs]: [https://github.com/imartayan/pfp]
