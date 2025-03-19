@@ -376,6 +376,8 @@
 sequence collection. By looking at how <span class="arithmatex">\(\pi_{w,p}\)</span> changes as new sequences are added to the collection, one can infer how much <em>novel</em> sequence is appearing, or how redundant
 the newly added sequences are compared to what is already present in the collection.  The parameters <span class="arithmatex">\(w\)</span> (the window size) and <span class="arithmatex">\(p\)</span> (the sampling factor) affect how  the 
 value is computed, but <span class="arithmatex">\(\pi\)</span> is fairly robust to these values as described in the preprint of Lipták et al.<sup id="fnref:preprint"><a class="footnote-ref" href="#fn:preprint">1</a></sup>.</p>
+<p>This program itself is built around the core high-performance PFP implementation of Igor Martayan<sup id="fnref:pfprs"><a class="footnote-ref" href="#fn:pfprs">3</a></sup>. That implementation is a work in progress, but it has several performance 
+advantages over existing PFP implementations, which should be explained in an upcoming preprint.</p>
 <h2 id="how-pipfp-rs-works">How <code>pipfp-rs</code> works</h2>
 <p>The usage for <code>pipfp-rs</code> is shown below.  It has one required parameter (<code>-i</code>/<code>--input</code>) which takes either the path to a directory, or a file that lists a collection of input files (1 file per line).
 If it is provided with a directory, it will walk the directory and collect all of the files ending in <code>.fa</code>, <code>.fa.gz</code>, <code>.fna</code> or <code>.fna.gz</code> (or the capital versions of these), it will then sort the 
@@ -409,6 +411,9 @@ a key <code>norm</code> whose value is <code>true</code> if the <code>-n</code> 
 </li>
 <li id="fn:pipfp">
 <p><a href="https://github.com/simolucaa/piPFP">pipfp</a>&#160;<a class="footnote-backref" href="#fnref:pipfp" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:pfprs">
+<p>[https://github.com/imartayan/pfp]&#160;<a class="footnote-backref" href="#fnref:pfprs" title="Jump back to footnote 3 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>
