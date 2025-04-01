@@ -79,8 +79,12 @@ fn merge_parse_in<P: AsRef<Path>>(
         if global_parse.keep_parses {
             global_parse.parses.extend_from_slice(&parse.phrases);
         }
-        global_parse.dict.insert(parse.prefix.0, parse.prefix.1);
-        global_parse.dict.insert(parse.suffix.0, parse.suffix.1);
+        global_parse
+            .dict
+            .insert(parse.prefix.hash(), parse.prefix.len());
+        global_parse
+            .dict
+            .insert(parse.suffix.hash(), parse.suffix.len());
         global_parse
             .dict
             .extend(parse.phrases.iter().copied().zip(parse.phrases_len));
