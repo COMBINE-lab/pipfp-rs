@@ -114,6 +114,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut pi_vals = Vec::<usize>::new();
     let valid_file_name = |f: &str| {
         f.ends_with("fa")
+            || f.ends_with("fasta")
+            || f.ends_with("fasta.gz")
+            || f.ends_with("FASTA")
+            || f.ends_with("FASTA.GZ")
             || f.ends_with("FA")
             || f.ends_with("fa.gz")
             || f.ends_with("FA.GZ")
@@ -178,7 +182,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .sum::<usize>();
         pi_vals.push(len_parse + len_phrases);
     }
-    bar.finish_with_message(format!("finished in {:.3} total seconds", tot));
+    bar.finish_with_message(format!("finished in {tot:.3} total seconds"));
 
     if !pi_vals.is_empty() {
         let tot = *pi_vals.last().expect("non empty") as f64;
