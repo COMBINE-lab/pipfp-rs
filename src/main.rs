@@ -1,3 +1,5 @@
+mod hist;
+
 use bon::Builder;
 use clap::Parser;
 use indicatif::{ProgressBar, ProgressStyle};
@@ -59,6 +61,7 @@ fn merge_parse_in<P: AsRef<Path>>(
     p: usize,
     path: P,
     global_parse: &mut CumulativeParse,
+    phrase_map: &mut hist::PhraseFreqMap,
     threads: usize,
 ) {
     let (reader, _) = from_path(path).expect("Failed to open input file");
@@ -76,6 +79,7 @@ fn merge_parse_in<P: AsRef<Path>>(
         };
 
         global_parse.parse_len += parse.phrases.len();
+        phrase_map.add_parse(&parse.phrases);
         if global_parse.keep_parses {
             global_parse.parses.extend_from_slice(&parse.phrases);
         }
@@ -168,10 +172,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     if is_dir {
         files.sort_unstable();
     }
+    let mut phrase_map = hist::PhraseFreqMap::new();
     for entry in files {
         bar.inc(1);
         let start_parse = Instant::now();
-        merge_parse_in(w, p, entry, &mut cumulative_parse, threads);
+        merge_parse_in(w, p, entry, &mut cumulative_parse, &mut phrase_map, threads);
         let elapsed = start_parse.elapsed().as_secs_f64();
         tot += elapsed;
         let len_parse = cumulative_parse.parse_len;
@@ -183,6 +188,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         pi_vals.push(len_parse + len_phrases);
     }
     bar.finish_with_message(format!("finished in {tot:.3} total seconds"));
+    let hist = phrase_map.get_hist();
+    let fnew: Vec<f64> = hist
+        .compute_fnew_vec()
+        .into_iter()
+        .map(|x| x.ln())
+        .collect();
+    let ng = (1..(fnew.len()))
+        .map(|x| (x as f64).ln())
+        .collect::<Vec<f64>>();
+    let coeffs = polyfit_rs::polyfit_rs::polyfit(&ng, &fnew[1..], 1);
+    println!("{:?}", fnew);
+    println!("{:?}", coeffs);
 
     if !pi_vals.is_empty() {
         let tot = *pi_vals.last().expect("non empty") as f64;

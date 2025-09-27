@@ -4,13 +4,19 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+ahash = "0.8.12"
 bon = "3.5.0"
 clap = { version = "4.5.32", features = ["derive"] }
+dashmap = { version = "6.1.0", features = ["raw-api"] }
+hashbrown = "0.16.0"
 indicatif = "0.18"
+leapfrog = { version = "0.3.2", features = ["stable_alloc"] }
 niffler = "3.0.0"
 pfp = { git = "https://github.com/imartayan/pfp.git", branch = "main", version = "0.1.0" }
+polyfit-rs = "0.2.1"
 rayon = "1.10.0"
 rustc-hash = "2.1.1"
 seq_io = "0.3.4"
 serde_json = { version = "1.0.140", features = ["preserve_order"] }
+spec_math = "0.1.6"
 walkdir = "2.5.0"
