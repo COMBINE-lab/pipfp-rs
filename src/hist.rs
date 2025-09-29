@@ -73,7 +73,7 @@ impl PhraseHist {
         for i in 1..self.tot_refs {
             let n = self.tot_refs as u64;
             ftot_m += (self.freqs[i] as f64)
-                * (1. - falling_fact(n, i as u64, m) / falling_fact(n, 0, m));
+                * (1. - (falling_fact(n, i as u64, m) / falling_fact(n, 0, m)));
         }
         ftot_m
     }
@@ -81,7 +81,7 @@ impl PhraseHist {
     pub fn compute_fnew_vec(&self) -> Vec<f64> {
         let mut fnew = vec![0f64; self.freqs.len()];
         let mut ftot_m1 = 0f64;
-        for (m, n) in self.freqs.iter().enumerate().skip(1) {
+        for (m, _) in self.freqs.iter().enumerate().skip(1) {
             let ftot_m = self.ftot(m as u64);
             fnew[m] = ftot_m - ftot_m1;
             ftot_m1 = ftot_m;

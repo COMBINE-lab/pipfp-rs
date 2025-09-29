@@ -188,6 +188,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         pi_vals.push(len_parse + len_phrases);
     }
     bar.finish_with_message(format!("finished in {tot:.3} total seconds"));
+
     let hist = phrase_map.get_hist();
     let fnew: Vec<f64> = hist
         .compute_fnew_vec()
@@ -197,9 +198,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let ng = (1..(fnew.len()))
         .map(|x| (x as f64).ln())
         .collect::<Vec<f64>>();
-    let coeffs = polyfit_rs::polyfit_rs::polyfit(&ng, &fnew[1..], 1);
-    println!("{:?}", fnew);
-    println!("{:?}", coeffs);
+    // fit in the log space
+    let coeffs = polyfit_rs::polyfit_rs::polyfit(&ng, &fnew[1..], 1)?;
+    // follow the piPFP conventions
+    let b = coeffs[1];
+    let a = coeffs[0].exp();
 
     if !pi_vals.is_empty() {
         let tot = *pi_vals.last().expect("non empty") as f64;
@@ -210,6 +213,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         };
 
         let j = json!({
+            "K" : a,
+            "alpha" : b.abs(),
             "pis" : pi_vals,
             "norm" : args.normalized
         });
